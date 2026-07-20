@@ -14,12 +14,17 @@
 python scripts/validate_language_packs.py
 python -m compileall custom_components/local_lingo
 pytest -q
-node --check www/local_lingo/local-lingo-cards.js
+node --check custom_components/local_lingo/frontend/local-lingo-cards.js
+python -m json.tool hacs.json >/dev/null
 ```
+
+GitHub Actions also runs Home Assistant hassfest and HACS validation.
 
 ## Backend responsibilities
 
 The integration owns profiles, language packs, sessions, answer scoring, points, streaks, and persistent state. The cards are thin authenticated clients over Home Assistant WebSocket commands.
+
+The dashboard card bundle is packaged inside `custom_components/local_lingo/frontend` and is served at `/local_lingo/local-lingo-cards.js` after Home Assistant loads the integration.
 
 ## WebSocket commands
 
