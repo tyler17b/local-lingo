@@ -72,9 +72,7 @@ class LessonEngine:
         item: VocabularyItem,
         vocabulary: list[VocabularyItem],
     ) -> dict:
-        candidates = [
-            value for value in vocabulary if value["id"] != item["id"]
-        ]
+        candidates = [value for value in vocabulary if value["id"] != item["id"]]
         question_types = ["target_to_source", "source_to_target"]
         if language == "de" and item.get("gender_or_article"):
             question_types.append("article")
@@ -82,12 +80,15 @@ class LessonEngine:
 
         if question_type == "article":
             choices = ["der", "die", "das"]
+            noun = item["target_text"].split(maxsplit=1)[-1]
             return {
                 "question_id": uuid4().hex,
                 "word_id": item["id"],
                 "type": "article",
-                "prompt": item["target_text"].split(maxsplit=1)[-1],
-                "instruction": "Choose the correct article",
+                "prompt": f"___ {noun}",
+                "instruction": (
+                    f"Choose the correct way to say “{item['source_text']}” in German"
+                ),
                 "choices": choices,
                 "correct_answer": item["gender_or_article"],
                 "attempts": 0,
@@ -136,9 +137,7 @@ class LessonEngine:
 
         question = session["questions"][session["current_index"]]
         result["question"] = {
-            key: value
-            for key, value in question.items()
-            if key not in {"correct_answer"}
+            key: value for key, value in question.items() if key not in {"correct_answer"}
         }
         return result
 
