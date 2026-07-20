@@ -64,3 +64,24 @@ def test_correct_answer_advances_session() -> None:
     result = engine.check_answer(session, correct)
     assert result["correct"] is True
     assert session["current_index"] == 1
+
+
+def test_article_question_explains_the_goal() -> None:
+    class ArticleRandom(random.Random):
+        def choice(self, sequence):
+            if "article" in sequence:
+                return "article"
+            return super().choice(sequence)
+
+    registry = LanguageRegistry(PACKAGE_ROOT / "languages")
+    import asyncio
+
+    asyncio.run(registry.async_load())
+    engine = LessonEngine(registry, rng=ArticleRandom(3))
+    session = engine.start_lesson(
+        user_id="learner_three", language="de", question_count=1, category="home"
+    )
+    question = session["questions"][0]
+    assert question["type"] == "article"
+    assert question["prompt"].startswith("___ ")
+    assert "Choose the correct way to say" in question["instruction"]
