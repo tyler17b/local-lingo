@@ -17,6 +17,7 @@ from .const import (
     SESSION_STORE_KEY,
     SESSION_STORE_VERSION,
 )
+from .frontend import async_register_frontend
 from .language_registry import LanguageRegistry
 from .lesson_engine import LessonEngine
 from .models import LocalLingoRuntime
@@ -32,6 +33,7 @@ PLATFORMS = [Platform.SENSOR]
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     """Set up the Local Lingo domain."""
     hass.data.setdefault(DOMAIN, {})
+    await async_register_frontend(hass)
     async_register_websocket_commands(hass)
     return True
 
