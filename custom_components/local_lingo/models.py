@@ -17,3 +17,72 @@ class UserProfile(TypedDict):
     daily_goal_points: int
     guest_mode: bool
     created_at: str
+
+
+class VocabularyItem(TypedDict, total=False):
+    """Language-pack vocabulary item."""
+
+    id: str
+    target_text: str
+    source_text: str
+    normalized_target: str
+    part_of_speech: str
+    category: str
+    difficulty: int
+    gender_or_article: str | None
+    gender: str | None
+    singular_article: str | None
+    plural_article: str | None
+    plural: str | None
+    audio_hint: str | None
+    tts_text: str | None
+    distractors: list[str]
+    examples: list[str]
+    tags: list[str]
+
+
+class SentenceExercise(TypedDict, total=False):
+    """Reviewed sentence-completion exercise from a language pack."""
+
+    id: str
+    type: str
+    difficulty: int
+    category: str
+    prompt: str
+    completed_text: str
+    translation: str
+    choices: list[str]
+    correct_answer: str
+    word_id: str
+    tags: list[str]
+
+
+class UserLanguageProgress(TypedDict):
+    """Persisted summary progress for one learner and one language."""
+
+    user_id: str
+    language: str
+    points_total: int
+    points_today: int
+    points_date: str | None
+    streak_current: int
+    streak_best: int
+    lessons_completed_total: int
+    lessons_completed_today: int
+    words_seen: int
+    words_mastered: int
+    correct_answers: int
+    incorrect_answers: int
+    last_activity_date: str | None
+    word_progress: dict[str, dict[str, Any]]
+
+
+@dataclass(slots=True)
+class LocalLingoRuntime:
+    """Runtime objects attached to the config entry."""
+
+    profiles: Any
+    progress: Any
+    languages: Any
+    sessions: Any
+    lesson_engine: Any
