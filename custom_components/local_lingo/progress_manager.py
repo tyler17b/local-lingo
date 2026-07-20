@@ -8,7 +8,7 @@ from typing import Any
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.dispatcher import async_dispatcher_send
 
-from .const import SIGNAL_PROGRESS_UPDATED
+from .const import EVENT_PROGRESS_UPDATED, SIGNAL_PROGRESS_UPDATED
 from .models import UserLanguageProgress
 from .storage import JsonStoreManager
 
@@ -65,6 +65,13 @@ class ProgressManager:
             item["lessons_completed_today"] = 0
             item["points_date"] = today
 
+    def _notify_updated(self, *, user_id: str, language: str) -> None:
+        async_dispatcher_send(self._hass, SIGNAL_PROGRESS_UPDATED)
+        self._hass.bus.async_fire(
+            EVENT_PROGRESS_UPDATED,
+            {"user_id": user_id, "language": language},
+        )
+
     async def async_record_answer(
         self,
         *,
@@ -103,7 +110,9 @@ class ProgressManager:
             points = 0
             item["incorrect_answers"] += 1
             word["times_incorrect"] += 1
-            word["mastery_score"] = max(0.0, float(word["mastery_score"]) - 0.12)
+            word["mastery_score"] = max(
+                0.0, float(word["mastery_score"]) - 0.12
+            )
 
         item["points_total"] += points
         item["points_today"] += points
@@ -113,7 +122,7 @@ class ProgressManager:
             if float(value.get("mastery_score", 0)) >= 0.8
         )
         await self._store.async_save()
-        async_dispatcher_send(self._hass, SIGNAL_PROGRESS_UPDATED)
+        self._notify_updated(user_id=user_id, language=language)
         return points
 
     async def async_complete_lesson(
@@ -121,7 +130,11 @@ class ProgressManager:
     ) -> int:
         item = self.get(user_id, language)
         today = date.today()
-        last = date.fromisoformat(item["last_activity_date"]) if item["last_activity_date"] else None
+        last = (
+            date.fromisoformat(item["last_activity_date"])
+            if item["last_activity_date"]
+            else None
+        )
 
         if last == today:
             pass
@@ -139,14 +152,14 @@ class ProgressManager:
         item["points_total"] += bonus
         item["points_today"] += bonus
         await self._store.async_save()
-        async_dispatcher_send(self._hass, SIGNAL_PROGRESS_UPDATED)
+        self._notify_updated(user_id=user_id, language=language)
         return bonus
 
     async def async_reset(self, *, user_id: str, language: str) -> None:
         progress = self._store.data.setdefault("progress", {})
         progress[self._key(user_id, language)] = self._new_progress(user_id, language)
         await self._store.async_save()
-        async_dispatcher_send(self._hass, SIGNAL_PROGRESS_UPDATED)
+        self._notify_updated(user_id=user_id, language=language)
 
     def summary(self) -> list[dict[str, Any]]:
         return list(self._store.data.setdefault("progress", {}).values())
