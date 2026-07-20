@@ -10,7 +10,7 @@ from homeassistant.components import websocket_api
 from homeassistant.config_entries import ConfigEntryState
 from homeassistant.core import HomeAssistant, callback
 
-from .const import DOMAIN, QUESTION_COUNT_OPTIONS
+from .const import DIFFICULTY_OPTIONS, DOMAIN, QUESTION_COUNT_OPTIONS
 from .models import LocalLingoRuntime
 
 
@@ -87,6 +87,7 @@ async def websocket_list_languages(
         vol.Required("language"): str,
         vol.Optional("question_count", default=10): vol.In(QUESTION_COUNT_OPTIONS),
         vol.Optional("category"): vol.Any(str, None),
+        vol.Optional("difficulty", default=1): vol.In(DIFFICULTY_OPTIONS),
     }
 )
 @websocket_api.async_response
@@ -106,6 +107,7 @@ async def websocket_start_lesson(
             language=msg["language"],
             question_count=msg["question_count"],
             category=msg.get("category"),
+            difficulty=msg["difficulty"],
         )
     except ValueError as err:
         connection.send_error(msg["id"], "lesson_error", str(err))
