@@ -1,6 +1,6 @@
 [project]
 name = "local-lingo"
-version = "0.1.0a3"
+version = "0.1.0a4"
 description = "Local-first language learning for Home Assistant"
 requires-python = ">=3.13"
 
