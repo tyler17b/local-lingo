@@ -1,0 +1,12 @@
+{
+  "domain": "local_lingo",
+  "name": "Local Lingo",
+  "codeowners": ["@tyler17b"],
+  "config_flow": true,
+  "documentation": "https://github.com/tyler17b/local-lingo",
+  "issue_tracker": "https://github.com/tyler17b/local-lingo/issues",
+  "integration_type": "service",
+  "iot_class": "calculated",
+  "single_config_entry": true,
+  "version": "0.1.0-alpha.1"
+}

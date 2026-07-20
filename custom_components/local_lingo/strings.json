@@ -1,0 +1,14 @@
+{
+  "title": "Local Lingo",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Set up Local Lingo",
+        "description": "Create the local language-learning service. No learner profiles are created automatically. Add learners from the progress card after setup."
+      }
+    },
+    "abort": {
+      "already_configured": "Local Lingo is already configured."
+    }
+  }
+}
