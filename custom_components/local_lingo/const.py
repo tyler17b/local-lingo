@@ -22,3 +22,4 @@ PROGRESS_STORE_KEY: Final = "local_lingo_progress"
 SESSION_STORE_KEY: Final = "local_lingo_sessions"
 
 SIGNAL_PROGRESS_UPDATED: Final = f"{DOMAIN}_progress_updated"
+EVENT_PROGRESS_UPDATED: Final = f"{DOMAIN}_progress_updated"
