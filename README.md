@@ -1,56 +1,60 @@
 # Local Lingo for Home Assistant
 
-Private-alpha local language learning for Home Assistant. Local Lingo currently targets German and Spanish, supports multiple learner profiles, stores progress locally, and provides two custom Lovelace cards:
+Local Lingo is a local-first language-learning integration for Home Assistant. It currently supports German and Spanish, multiple learner profiles, locally stored progress, and two custom dashboard cards:
 
 - `custom:local-lingo-lesson-card`
 - `custom:local-lingo-progress-card`
 
-The visual style is playful and language-learning inspired, but the project does not use Duolingo branding, logos, mascots, assets, accounts, or services.
+The interface is playful and language-learning inspired, but the project does not use Duolingo branding, logos, mascots, assets, accounts, or services.
 
 ## Alpha scope
 
-This first scaffold includes:
+The current alpha includes:
 
 - Home Assistant config flow
 - No preconfigured learner profiles
-- Add-user support through the progress card and WebSocket API
+- Learner creation through the progress card and authenticated WebSocket API
 - German and Spanish starter language packs
 - Five-, ten-, and fifteen-question lessons
-- Multiple-choice German/Spanish to English and English to German
+- Multiple-choice target-language-to-English and English-to-target-language questions
 - German article questions
 - Local points, streaks, word exposure, and mastery tracking
 - Resumable lesson sessions
 - One compact progress sensor per learner and language
-- GitHub Actions validation and installable config-overlay artifact
+- HACS-compatible repository structure
+- GitHub Actions validation with HACS and hassfest checks
 
 The included language packs are intentionally small starter datasets. The planned beta target is at least 1,000 reviewed entries per language.
 
-## Repository layout
+## Install with HACS
 
-```text
-custom_components/local_lingo/   Home Assistant backend and language packs
-www/local_lingo/                 Lovelace card bundle
-tests/                           Pure lesson-engine tests
-scripts/                         Language-pack validation
-.github/workflows/               Validation and packaging
-```
+1. In HACS, open the three-dot menu and select **Custom repositories**.
+2. Enter:
 
-## Private beta installation
+   ```text
+   https://github.com/tyler17b/local-lingo
+   ```
 
-1. Download the `local-lingo-config-overlay` artifact from a successful GitHub Actions run.
-2. Extract it into the Home Assistant `/config` directory. It creates:
-   - `/config/custom_components/local_lingo`
-   - `/config/www/local_lingo`
-3. Restart Home Assistant.
-4. Open **Settings → Devices & services → Add integration** and add **Local Lingo**.
-5. Register the frontend resource:
+3. Select **Integration**, then select **Add**.
+4. Open Local Lingo in HACS and select **Download**.
+5. Restart Home Assistant.
+6. Open **Settings → Devices & services → Add integration** and add **Local Lingo**.
 
-```yaml
-url: /local/local_lingo/local-lingo-cards.js
-resource_type: module
-```
+Local Lingo bundles its dashboard cards inside the integration and serves them from Home Assistant. Register the resource once:
 
-6. Add the progress card first so the first learner can be created:
+1. Open **Settings → Dashboards**.
+2. Open the three-dot menu and select **Resources**.
+3. Add this URL as a **JavaScript module**:
+
+   ```text
+   /local_lingo/local-lingo-cards.js
+   ```
+
+4. Refresh Home Assistant after saving the resource.
+
+## Add the dashboard cards
+
+Add the progress card first so the first learner can be created:
 
 ```yaml
 type: custom:local-lingo-progress-card
@@ -58,7 +62,7 @@ title: Learner Progress
 language: de
 ```
 
-7. Select **ADD USER**, create at least one learner, and then add the lesson card:
+Select **ADD USER**, create at least one learner, and then add the lesson card:
 
 ```yaml
 type: custom:local-lingo-lesson-card
@@ -67,31 +71,42 @@ default_language: de
 question_count: 10
 ```
 
+## Manual installation
+
+1. Copy `custom_components/local_lingo` into your Home Assistant `/config/custom_components/` directory.
+2. Restart Home Assistant.
+3. Add the Local Lingo integration from **Settings → Devices & services**.
+4. Register `/local_lingo/local-lingo-cards.js` as a JavaScript module under Dashboard Resources.
+
+## Repository layout
+
+```text
+custom_components/local_lingo/           Home Assistant integration
+custom_components/local_lingo/frontend/  Bundled dashboard cards
+scripts/                                 Language-pack validation
+tests/                                   Lesson-engine tests
+.github/workflows/                       HACS, hassfest, and project validation
+hacs.json                                HACS repository metadata
+```
+
 ## Current limitations
 
 - Starter vocabulary only; not yet the planned 1,000 reviewed entries per language.
-- No TTS or listening questions yet.
+- No text-to-speech or listening questions yet.
 - Newly added profiles appear in the cards immediately, but summary sensors for them require an integration reload in this alpha.
 - Review scheduling is not yet spaced repetition; current lessons use seeded random selection.
 - Temporary-profile auto-reset is not implemented yet.
-- Frontend is a direct JavaScript alpha implementation rather than the final Lit/TypeScript build.
+- The frontend is a direct JavaScript alpha implementation rather than the final Lit/TypeScript build.
+- The dashboard resource must currently be registered once by the Home Assistant administrator.
 
 ## Development roadmap
-
-### Alpha 1
-
-- End-to-end lesson loop
-- Profile creation
-- German and Spanish starter packs
-- Points, streaks, progress card
-- Private artifact deployment
 
 ### Alpha 2
 
 - Adaptive review queue
 - Temporary-profile reset rules
 - Edit, disable, and delete profile UI
-- TTS configuration and listening questions
+- Text-to-speech configuration and listening questions
 - Dynamic summary sensor creation
 
 ### Beta
@@ -103,12 +118,6 @@ question_count: 10
 - Store schema migrations
 - Tablet and phone usability testing
 
-### Public-readiness
-
-- Public repository decision
-- HACS packaging
-- Documentation, issue templates, security policy, and release automation
-
 ## Privacy
 
-A fresh installation contains no learner profiles. Profile names, progress, and active sessions are stored through Home Assistant persistent storage only after an administrator creates them. No telemetry or cloud service is used by Local Lingo. Frontend files contain no learner progress or credentials.
+A fresh installation contains no learner profiles. Profile names, progress, and active sessions are stored through Home Assistant persistent storage only after an administrator creates them. No telemetry or cloud service is used by Local Lingo. The bundled frontend contains no learner progress, credentials, or preconfigured household information.
