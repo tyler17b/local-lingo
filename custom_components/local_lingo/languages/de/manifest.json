@@ -14,5 +14,6 @@
     "die",
     "das"
   ],
-  "content_status": "expanded-alpha"
+  "content_status": "expanded-alpha",
+  "codeowners": ["@tyler17b"]
 }
