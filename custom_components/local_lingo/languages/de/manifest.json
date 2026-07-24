@@ -1,20 +1,14 @@
 {
-  "domain": "local_lingo",
-  "code": "de",
+  "codeowners": ["@tyler17b"],
+  "content_status": "expanded-alpha",
+  "documentation": "https://github.com/tyler17b/local-lingo",
+  "domain": "de",
+  "integration_type": "service",
+  "iot_class": "calculated",
   "name": "German",
   "native_name": "Deutsch",
   "source_language": "en",
   "source_tts_language": "en-US",
   "tts_language": "de-DE",
-  "version": 2,
-  "supports_articles": true,
-  "supports_gender": true,
-  "supports_tts": true,
-  "article_choices": [
-    "der",
-    "die",
-    "das"
-  ],
-  "content_status": "expanded-alpha",
-  "codeowners": ["@tyler17b"]
+  "version": "0.1.0-alpha.4"
 }
