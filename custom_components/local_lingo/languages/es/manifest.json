@@ -1,19 +1,14 @@
 {
-  "domain": "local_lingo",
-  "code": "es",
+  "codeowners": ["@tyler17b"],
+  "content_status": "expanded-alpha",
+  "documentation": "https://github.com/tyler17b/local-lingo",
+  "domain": "es",
+  "integration_type": "service",
+  "iot_class": "calculated",
   "name": "Spanish",
   "native_name": "Español",
   "source_language": "en",
   "source_tts_language": "en-US",
   "tts_language": "es-ES",
-  "version": 2,
-  "supports_articles": true,
-  "supports_gender": true,
-  "supports_tts": true,
-  "article_choices": [
-    "el",
-    "la"
-  ],
-  "content_status": "expanded-alpha",
-  "codeowners": ["@tyler17b"]
+  "version": "0.1.0-alpha.4"
 }
