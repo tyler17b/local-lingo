@@ -1,4 +1,5 @@
 {
+  "code": "es",
   "codeowners": ["@tyler17b"],
   "content_status": "expanded-alpha",
   "documentation": "https://github.com/tyler17b/local-lingo",
