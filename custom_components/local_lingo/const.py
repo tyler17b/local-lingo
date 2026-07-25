@@ -4,6 +4,9 @@ from __future__ import annotations
 
 from typing import Final
 
+import voluptuous as vol
+from homeassistant.helpers import config_validation as cv
+
 DOMAIN: Final = "local_lingo"
 NAME: Final = "Local Lingo"
 PLATFORMS: Final = ["sensor"]
@@ -24,3 +27,8 @@ SESSION_STORE_KEY: Final = "local_lingo_sessions"
 
 SIGNAL_PROGRESS_UPDATED: Final = f"{DOMAIN}_progress_updated"
 EVENT_PROGRESS_UPDATED: Final = f"{DOMAIN}_progress_updated"
+
+CONFIG_SCHEMA = vol.Schema(
+    {DOMAIN: cv.empty_config_schema(DOMAIN)},
+    extra=vol.ALLOW_EXTRA,
+)
