@@ -25,13 +25,13 @@ class LanguageRegistry:
         self._sentences.clear()
 
         for directory in sorted(path for path in self._root.iterdir() if path.is_dir()):
-            manifest_path = directory / "manifest.json"
+            metadata_path = directory / "language.json"
             vocabulary_paths = sorted(directory.glob("vocabulary.*.json"))
-            if not manifest_path.exists() or not vocabulary_paths:
+            if not metadata_path.exists() or not vocabulary_paths:
                 continue
 
-            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-            code = manifest["code"]
+            metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+            code = metadata["code"]
 
             vocabulary: list[VocabularyItem] = []
             for path in vocabulary_paths:
@@ -49,7 +49,7 @@ class LanguageRegistry:
                 sentences.extend(payload)
             self._validate_sentences(code, sentences)
 
-            language = dict(manifest)
+            language = dict(metadata)
             language["vocabulary_count"] = len(vocabulary)
             language["sentence_count"] = len(sentences)
             language["difficulty_levels"] = [1, *([2] if sentences else [])]
