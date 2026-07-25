@@ -1,0 +1,14 @@
+{
+  "article_choices": [
+    "der",
+    "die",
+    "das"
+  ],
+  "code": "de",
+  "content_status": "expanded-alpha",
+  "name": "German",
+  "native_name": "Deutsch",
+  "source_language": "en",
+  "source_tts_language": "en-US",
+  "tts_language": "de-DE"
+}
