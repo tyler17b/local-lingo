@@ -1,13 +1,17 @@
 {
-  "codeowners": ["@tyler17b"],
-  "config_flow": true,
-  "dependencies": ["http"],
-  "documentation": "https://github.com/tyler17b/local-lingo",
   "domain": "local_lingo",
+  "name": "Local Lingo",
+  "codeowners": [
+    "@tyler17b"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "http"
+  ],
+  "documentation": "https://github.com/tyler17b/local-lingo",
   "integration_type": "service",
   "iot_class": "calculated",
   "issue_tracker": "https://github.com/tyler17b/local-lingo/issues",
-  "name": "Local Lingo",
   "single_config_entry": true,
   "version": "0.1.0-alpha.4"
 }
