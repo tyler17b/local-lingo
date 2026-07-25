@@ -29,6 +29,9 @@ from .websocket_api import async_register_websocket_commands
 
 PLATFORMS = [Platform.SENSOR]
 
+from homeassistant.helpers import config_validation as cv
+
+CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
 
 async def async_setup(hass: HomeAssistant, config: dict) -> bool:
     """Set up the Local Lingo domain."""
