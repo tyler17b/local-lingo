@@ -13,5 +13,5 @@
   "iot_class": "calculated",
   "issue_tracker": "https://github.com/tyler17b/local-lingo/issues",
   "single_config_entry": true,
-  "version": "0.1.0-alpha.4"
+  "version": "0.2.0-alpha.1"
 }
