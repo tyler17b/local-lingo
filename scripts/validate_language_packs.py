@@ -24,7 +24,12 @@ SENTENCE_REQUIRED = {
 def main() -> int:
     errors: list[str] = []
     for directory in sorted(path for path in ROOT.iterdir() if path.is_dir()):
-        manifest = json.loads((directory / "manifest.json").read_text(encoding="utf-8"))
+        metadata_path = directory / "language.json"
+        if not metadata_path.exists():
+            errors.append(f"{directory.name} is missing language.json")
+            continue
+
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
         vocabulary: list[dict] = []
         for path in sorted(directory.glob("vocabulary.*.json")):
             vocabulary.extend(json.loads(path.read_text(encoding="utf-8")))
@@ -61,7 +66,7 @@ def main() -> int:
                 errors.append(f"{directory.name} sentence {item_id} answer is missing from choices")
 
         print(
-            f"{manifest['name']}: {len(vocabulary)} vocabulary entries, "
+            f"{metadata['name']}: {len(vocabulary)} vocabulary entries, "
             f"{len(sentences)} sentence exercises"
         )
 
